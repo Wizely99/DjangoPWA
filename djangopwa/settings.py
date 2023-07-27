@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+from dj_database_url import parse as db_url
+from decouple import config
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -72,20 +73,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangopwa.wsgi.application'
 
+ALLOWED_HOSTS = ["*"]
 
+DATABASES = {
+    "default": config(
+        "DATABASE_URL",
+        default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3"),
+        cast=db_url,
+    )
+}
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'posts',
-        'HOST':'127.0.0.1',
-        'PORT': 3306,
-        'USER':'root',
-        'PASSWORD':'root',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'posts',
+#         'HOST':'127.0.0.1',
+#         'PORT': 3306,
+#         'USER':'root',
+#         'PASSWORD':'root',
+#     }
+# }
 
 
 # Password validation
